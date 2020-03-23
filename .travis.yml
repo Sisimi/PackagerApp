@@ -1,13 +1,5 @@
 before_install:
  - chmod +x gradlew
-
-language: android
-dist: trusty
-android:
-  components:
-    - build-tools-29.0.0
-    - android-29
-    - extra
     
 language: android
 android:
