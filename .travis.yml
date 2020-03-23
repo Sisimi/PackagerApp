@@ -1,3 +1,6 @@
+script:
+  - cd src
+
 language: android
 dist: trusty
 android:
