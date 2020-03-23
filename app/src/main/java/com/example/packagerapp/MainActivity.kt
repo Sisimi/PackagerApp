@@ -13,6 +13,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        Mocskos dolog
         setSupportActionBar(toolbar)
 
         fab.setOnClickListener { view ->
