@@ -1,4 +1,4 @@
-script:
+before_install:
   - cd src
 
 language: android
