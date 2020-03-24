@@ -6,8 +6,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.example.packagerapp.R
+import com.example.packagerapp.di.appModules
+import com.example.packagerapp.interactors.IDatabaseInteractor
 
 import kotlinx.android.synthetic.main.activity_main.*
+import org.koin.android.ext.android.get
+import org.koin.android.ext.android.startKoin
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,6 +24,9 @@ class MainActivity : AppCompatActivity() {
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
         }
+
+        startKoin(this, appModules)
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

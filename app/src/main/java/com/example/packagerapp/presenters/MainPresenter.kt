@@ -3,18 +3,17 @@ package com.example.packagerapp.presenters
 import com.example.packagerapp.interactors.IDatabaseInteractor
 import com.example.packagerapp.models.Package
 import com.example.packagerapp.screens.MainScreen
-import com.example.packagerapp.interactors.DatabaseInteractor
-import javax.inject.Inject
 
-object MainPresenter : AbstractPresenter<MainScreen>(){
-    @Inject
-    lateinit var databaseInteractor: DatabaseInteractor
+import org.koin.android.ext.android.get
+import org.koin.android.ext.android.startKoin
+import org.koin.standalone.KoinComponent
+import org.koin.standalone.get
+
+object MainPresenter : AbstractPresenter<MainScreen>(), KoinComponent{
+
+    val databaseInteractor: IDatabaseInteractor = get()
 
     private val packagesCache: List<Package>? = null
-
-    init {
-
-    }
 
     override fun attachScreen(screen: MainScreen) {
         super.attachScreen(screen)
