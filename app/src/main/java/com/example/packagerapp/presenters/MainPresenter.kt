@@ -11,7 +11,7 @@ import org.koin.standalone.get
 
 object MainPresenter : AbstractPresenter<MainScreen>(), KoinComponent{
 
-    val databaseInteractor: IDatabaseInteractor = get()
+    private val databaseInteractor: IDatabaseInteractor = get()
 
     private val packagesCache: List<Package>? = null
 

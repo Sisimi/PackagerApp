@@ -8,12 +8,18 @@ import android.view.MenuItem
 import com.example.packagerapp.R
 import com.example.packagerapp.di.appModules
 import com.example.packagerapp.interactors.IDatabaseInteractor
+import com.example.packagerapp.models.Package
+import com.example.packagerapp.presenters.AddPackagePresenter
+import com.example.packagerapp.presenters.MainPresenter
+import com.example.packagerapp.screens.MainScreen
 
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.get
 import org.koin.android.ext.android.startKoin
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), MainScreen {
+
+    var mainPresenter: MainPresenter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +32,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         startKoin(this, appModules)
-
+        mainPresenter = get()
+        mainPresenter!!.attachScreen(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -43,5 +50,13 @@ class MainActivity : AppCompatActivity() {
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun openPackageInfoActivity(packageObject: Package) {
+        TODO("Not yet implemented")
+    }
+
+    override fun refreshList(packages: Package) {
+        TODO("Not yet implemented")
     }
 }
