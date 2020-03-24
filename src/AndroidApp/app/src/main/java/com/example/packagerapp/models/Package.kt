@@ -8,5 +8,3 @@ data class Package(var name: String?,
 data class NameValue(var name: String,
                      var value: String
 )
-
-Error
