@@ -1,6 +1,10 @@
 package com.example.packagerapp.interactors
 
-object DatabaseInteractor:IDatabaseInteractor{
+import javax.inject.Inject
+
+class DatabaseInteractor
+@Inject constructor()
+    : IDatabaseInteractor {
 
     override fun getPackages() {
         TODO("Not yet implemented")

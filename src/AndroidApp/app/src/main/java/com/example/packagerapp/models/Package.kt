@@ -5,6 +5,3 @@ data class Package(var name: String?,
                    var description: String?
                    )
 
-data class NameValue(var name: String,
-                     var value: String
-)
