@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.example.packagerapp.R
-import com.example.packagerapp.di.appModules
+import com.example.packagerapp.di.DaggerMainPresenterComponent
+import com.example.packagerapp.di.MainPresenterComponent
+import com.example.packagerapp.interactors.DatabaseInteractor
 import com.example.packagerapp.interactors.IDatabaseInteractor
 import com.example.packagerapp.models.Package
 import com.example.packagerapp.presenters.AddPackagePresenter
@@ -14,12 +16,13 @@ import com.example.packagerapp.presenters.MainPresenter
 import com.example.packagerapp.screens.MainScreen
 
 import kotlinx.android.synthetic.main.activity_main.*
-import org.koin.android.ext.android.get
-import org.koin.android.ext.android.startKoin
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), MainScreen {
 
-    var mainPresenter: MainPresenter? = null
+    @Inject lateinit var mainPresenter: MainPresenter
+    var mainPresenterComponent : MainPresenterComponent = DaggerMainPresenterComponent.create()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,9 +34,9 @@ class MainActivity : AppCompatActivity(), MainScreen {
                     .setAction("Action", null).show()
         }
 
-        startKoin(this, appModules)
-        mainPresenter = get()
-        mainPresenter!!.attachScreen(this)
+        mainPresenterComponent.inject(this)
+
+        mainPresenter.getPackages()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
