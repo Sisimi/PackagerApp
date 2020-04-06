@@ -8,8 +8,6 @@ import android.view.MenuItem
 import com.example.packagerapp.R
 import com.example.packagerapp.di.DaggerMainPresenterComponent
 import com.example.packagerapp.di.MainPresenterComponent
-import com.example.packagerapp.interactors.DatabaseInteractor
-import com.example.packagerapp.interactors.IDatabaseInteractor
 import com.example.packagerapp.models.Package
 import com.example.packagerapp.presenters.AddPackagePresenter
 import com.example.packagerapp.presenters.MainPresenter

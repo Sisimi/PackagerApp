@@ -5,7 +5,7 @@ import com.example.packagerapp.screens.AddPackageScreen
 import com.example.packagerapp.models.Package
 
 object AddPackagePresenter : AbstractPresenter<AddPackageScreen>(){
-    val newPackage = Package(null, null, null)
+    val newPackage = Package(null, null, null, null)
 
     override fun attachScreen(screen: AddPackageScreen) {
         super.attachScreen(screen)

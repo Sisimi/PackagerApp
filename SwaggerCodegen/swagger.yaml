@@ -1,0 +1,106 @@
+x-generator: NSwag v13.3.0.0 (NJsonSchema v10.1.11.0 (Newtonsoft.Json v11.0.0.0))
+swagger: '2.0'
+info:
+  title: Packager App backend API
+  description: >-
+    Alábbiakban látható a Packager App-hoz használt adatbázis kezelő API
+    leírása.
+  contact:
+    name: Batta Tamás
+    email: tomi9994@gmail.com
+  version: 1.0.0
+host: 'localhost:5001'
+schemes:
+  - https
+produces:
+  - text/plain
+  - application/json
+  - text/json
+paths:
+  /api:
+    get:
+      tags:
+        - Packager
+      operationId: Packager_HealthCheck
+      responses:
+        '200':
+          x-nullable: false
+          description: ''
+          schema:
+            type: string
+  /api/packages:
+    get:
+      tags:
+        - Packager
+      operationId: Packager_GetAllPackages
+      responses:
+        '200':
+          x-nullable: false
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Package'
+  '/api/package/{searchString}':
+    get:
+      tags:
+        - Packager
+      operationId: Packager_GetSpecificPackages
+      parameters:
+        - type: string
+          name: searchString
+          in: path
+          required: true
+          x-nullable: true
+      responses:
+        '200':
+          x-nullable: false
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Package'
+  /api/package/add:
+    put:
+      tags:
+        - Packager
+      operationId: Packager_AddPackage
+      consumes:
+        - application/json-patch+json
+        - application/json
+        - text/json
+        - application/*+json
+      parameters:
+        - name: package
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Package'
+          x-nullable: false
+      responses:
+        '200':
+          x-nullable: false
+          description: ''
+          schema:
+            $ref: '#/definitions/Package'
+definitions:
+  Package:
+    type: object
+    properties:
+      id:
+        type: string
+      packageName:
+        type: string
+      description:
+        type: string
+      nameValueList:
+        type: array
+        items:
+          $ref: '#/definitions/NameValue'
+  NameValue:
+    type: object
+    properties:
+      name:
+        type: string
+      value:
+        type: string

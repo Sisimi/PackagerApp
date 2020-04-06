@@ -1,7 +1,7 @@
 package com.example.packagerapp.presenters
 
-import com.example.packagerapp.interactors.DatabaseInteractor
-import com.example.packagerapp.interactors.IDatabaseInteractor
+import com.example.packagerapp.interactors.RemoteDatabaseInteractor
+import com.example.packagerapp.interactors.IRemoteDatabaseInteractor
 import com.example.packagerapp.models.Package
 import com.example.packagerapp.screens.MainScreen
 import dagger.Module
@@ -9,7 +9,7 @@ import dagger.Provides
 import javax.inject.Inject
 
 class MainPresenter
-    @Inject constructor(private var databaseInteractor: IDatabaseInteractor)
+    @Inject constructor(private var databaseInteractor: IRemoteDatabaseInteractor)
     : AbstractPresenter<MainScreen>() {
 
     private val packagesCache: List<Package>? = null
@@ -27,7 +27,8 @@ class MainPresenter
     }
 
     fun getPackages() {
-        throw NotImplementedError()
+        //throw NotImplementedError()
+        databaseInteractor.getPackages()
     }
 
     fun searchPackages(packageName: String){

@@ -1,7 +1,9 @@
 package com.example.packagerapp.di
 
-import com.example.packagerapp.interactors.DatabaseInteractor
-import com.example.packagerapp.interactors.IDatabaseInteractor
+
+import com.example.packagerapp.interactors.APIs.IRemoteDatabaseAPI
+import com.example.packagerapp.interactors.IRemoteDatabaseInteractor
+import com.example.packagerapp.interactors.RemoteDatabaseInteractor
 import com.example.packagerapp.presenters.MainPresenter
 import dagger.Module
 import dagger.Provides
@@ -11,11 +13,13 @@ import javax.inject.Singleton
 class MainPresenterModule {
 
     @Provides
-    fun provideDatabaseInteractor() : DatabaseInteractor = DatabaseInteractor()
+    fun provideDatabaseInteractor(remoteDatabaseAPI : IRemoteDatabaseAPI) : IRemoteDatabaseInteractor {
+        return RemoteDatabaseInteractor(remoteDatabaseAPI)
+    }
 
     @Provides
     @Singleton
-    fun provideMainPresenterModule(databaseInteractor: DatabaseInteractor) : MainPresenter {
+    fun provideMainPresenterModule(databaseInteractor: RemoteDatabaseInteractor) : MainPresenter {
         return MainPresenter(databaseInteractor)
     }
 }
