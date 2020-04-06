@@ -36,6 +36,20 @@ namespace PackagerWebAPI
             services.AddSingleton<IPackagerDBSettings>(sp =>
                 sp.GetRequiredService<IOptions<PackagerDBSettings>>().Value);
 
+            services.AddSwaggerDocument(config =>
+            {
+                config.PostProcess = document =>
+                {
+                    document.Info.Title = "Packager App backend API";
+                    document.Info.Description = "Alábbiakban látható a Packager App-hoz használt adatbázis kezelő API leírása.";
+                    document.Info.Contact = new NSwag.OpenApiContact
+                    {
+                        Name = "Batta Tamás",
+                        Email = "tomi9994@gmail.com"
+                    };
+                };
+            });
+
 
             services.AddSingleton<PackagerDBContext>();
             services.AddSingleton<IPackagerDBRepository, PackagerDBRepository>();
@@ -55,6 +69,10 @@ namespace PackagerWebAPI
             }
 
             app.UseHttpsRedirection();
+
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
+
             app.UseMvc();
         }
     }
