@@ -10,6 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using PackagerWebAPI.Data;
+using PackagerWebAPI.Misc;
+using PackagerWebAPI.Services;
 
 namespace PackagerWebAPI
 {
@@ -26,6 +29,30 @@ namespace PackagerWebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.Configure<PackagerDBSettings>(
+       Configuration.GetSection(nameof(PackagerDBSettings)));
+
+            services.AddSingleton<IPackagerDBSettings>(sp =>
+                sp.GetRequiredService<IOptions<PackagerDBSettings>>().Value);
+
+            services.AddSwaggerDocument(config =>
+            {
+                config.PostProcess = document =>
+                {
+                    document.Info.Title = "Packager App backend API";
+                    document.Info.Description = "Alábbiakban látható a Packager App-hoz használt adatbázis kezelő API leírása.";
+                    document.Info.Contact = new NSwag.OpenApiContact
+                    {
+                        Name = "Batta Tamás",
+                        Email = "tomi9994@gmail.com"
+                    };
+                };
+            });
+
+
+            services.AddSingleton<PackagerDBContext>();
+            services.AddSingleton<IPackagerDBRepository, PackagerDBRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,6 +69,10 @@ namespace PackagerWebAPI
             }
 
             app.UseHttpsRedirection();
+
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
+
             app.UseMvc();
         }
     }
