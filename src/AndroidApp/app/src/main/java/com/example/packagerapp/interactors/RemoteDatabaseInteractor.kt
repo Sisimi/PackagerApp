@@ -17,38 +17,73 @@ class RemoteDatabaseInteractor
 
 
 
-    override fun getPackages() : List<Package?>? {
+    override fun getPackages(f: (packages: List<Package?>?) -> Unit){
         var call = remoteDatabaseAPI.packagerGetAllPackages()
-        var result : List<Package?>? = null
-
-
 
         call?.enqueue(object: Callback<List<Package?>?>{
             override fun onFailure(call: Call<List<Package?>?>, t: Throwable) {
-                result = null
-                Log.d("Network", t.message)
+                Log.d("Network Error", t.message)
             }
 
             override fun onResponse(call: Call<List<Package?>?>, response: Response<List<Package?>?>) {
-                result = response.body()
-                Log.d("Network", "Success")
-                for (packageObject in response.body()!!)
+                var packages = response.body()
+
+                if (CheckPackages(packages))
                 {
-                    Log.d("Response", packageObject!!.packageName)
+                    Log.d("Network", "Success")
+                    for (packageObject in response.body()!!)
+                    {
+                        Log.d("Response", packageObject!!.packageName)
+                    }
+
+                    f(packages)
+                }
+                else
+                {
+                    f(null)
                 }
             }
         })
-
-
-        return result
     }
 
-    override fun putPackage() {
-        throw NotImplementedError()
+    override fun putPackage(packageObject: Package) : Package? {
+        var call = remoteDatabaseAPI.packagerAddPackage(packageObject)
+
+        var packageResult = call?.execute()?.body()
+
+        if(CheckPackageValidity(packageResult)) return packageResult
+
+        return null
+    }
+
+    override fun getPackagesBasedOnSearch(searchString: String) : List<Package?>? {
+        var call = remoteDatabaseAPI.packagerGetSpecificPackages(searchString)
+
+        var packages = call?.execute()?.body()
+
+        if(CheckPackages(packages)) return packages
+
+        return null
     }
 
     override fun deletePackage() {
         throw NotImplementedError()
     }
 
+    private fun CheckPackages(packages : List<Package?>?) : Boolean
+    {
+        if(packages == null) return false
+
+        for (packageItem in packages!!) {
+            if (!CheckPackageValidity(packageItem)) return false;
+        }
+
+        return true
+    }
+
+    private fun CheckPackageValidity(packageObject: Package?) : Boolean
+    {
+        //TODO: Implement properly
+        return true
+    }
 }

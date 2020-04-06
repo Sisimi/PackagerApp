@@ -8,6 +8,7 @@ import android.view.MenuItem
 import com.example.packagerapp.R
 import com.example.packagerapp.di.DaggerMainPresenterComponent
 import com.example.packagerapp.di.MainPresenterComponent
+import com.example.packagerapp.misc.appContext
 import com.example.packagerapp.models.Package
 import com.example.packagerapp.presenters.AddPackagePresenter
 import com.example.packagerapp.presenters.MainPresenter
@@ -24,6 +25,9 @@ class MainActivity : AppCompatActivity(), MainScreen {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        appContext = applicationContext
+
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
@@ -33,6 +37,7 @@ class MainActivity : AppCompatActivity(), MainScreen {
         }
 
         mainPresenterComponent.inject(this)
+        mainPresenter.attachScreen(this)
 
         mainPresenter.getPackages()
     }
@@ -57,7 +62,8 @@ class MainActivity : AppCompatActivity(), MainScreen {
         TODO("Not yet implemented")
     }
 
-    override fun refreshList(packages: Package) {
+    override fun refreshList(packages: List<Package?>?) {
+        var asd : Package? = null
         TODO("Not yet implemented")
     }
 }
