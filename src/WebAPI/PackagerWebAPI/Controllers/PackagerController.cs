@@ -41,9 +41,16 @@ namespace PackagerWebAPI.Controllers
 
         [HttpPut]
         [Route("package/add")]
-        public async Task<ActionResult<Package>> AddPackage(Package package)
+        public async Task<ActionResult<Package>> PutOrUpdatePackage(Package package)
         {
             return await packagerDBRepository.AddPackage(package);
+        }
+
+        [HttpDelete]
+        [Route("package/delete/{id}")]
+        public async Task<ActionResult<Package>> DeletePackage(string Id)
+        {
+            throw new NotImplementedException();
         }
 
     }

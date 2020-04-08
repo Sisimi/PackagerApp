@@ -15,73 +15,106 @@ class RemoteDatabaseInteractor
 @Inject constructor(private var remoteDatabaseAPI: IRemoteDatabaseAPI)
     : IRemoteDatabaseInteractor {
 
-
-
-    override fun getPackages(f: (packages: List<Package?>?) -> Unit){
+    override fun getPackages(handleResponse: (packages: List<Package?>?) -> Unit){
         var call = remoteDatabaseAPI.packagerGetAllPackages()
 
         call?.enqueue(object: Callback<List<Package?>?>{
             override fun onFailure(call: Call<List<Package?>?>, t: Throwable) {
-                Log.d("Network Error", t.message)
+                var packages = listOf<Package>()
+                handleResponse(packages)
             }
 
             override fun onResponse(call: Call<List<Package?>?>, response: Response<List<Package?>?>) {
                 var packages = response.body()
 
-                if (CheckPackages(packages))
+                if (!checkPackagesValidity(packages))
                 {
-                    Log.d("Network", "Success")
-                    for (packageObject in response.body()!!)
-                    {
-                        Log.d("Response", packageObject!!.packageName)
-                    }
+                    packages = listOf<Package>()
+                }
 
-                    f(packages)
-                }
-                else
-                {
-                    f(null)
-                }
+                handleResponse(packages)
             }
         })
     }
 
-    override fun putPackage(packageObject: Package) : Package? {
-        var call = remoteDatabaseAPI.packagerAddPackage(packageObject)
+    override fun addOrUpdatePackage(packageObject: Package, handleResponse: (packageObject: Package?) -> Unit) {
+        var call = remoteDatabaseAPI.packagerPutOrUpdatePackage(packageObject)
 
-        var packageResult = call?.execute()?.body()
+        call?.enqueue(object: Callback<Package?>{
+            override fun onFailure(call: Call<Package?>, t: Throwable) {
 
-        if(CheckPackageValidity(packageResult)) return packageResult
+            }
 
-        return null
+            override fun onResponse(call: Call<Package?>, response: Response<Package?>) {
+                var packageObject = response.body()
+
+                if(!checkPackageValidity(packageObject))
+                {
+                    handleResponse(null)
+                    return
+                }
+
+                handleResponse(packageObject)
+            }
+        })
     }
 
-    override fun getPackagesBasedOnSearch(searchString: String) : List<Package?>? {
+    override fun getPackagesBasedOnSearch(searchString: String, handleResponse: (packages: List<Package?>?) -> Unit){
         var call = remoteDatabaseAPI.packagerGetSpecificPackages(searchString)
 
-        var packages = call?.execute()?.body()
+        call?.enqueue(object: Callback<List<Package?>?>{
+            override fun onFailure(call: Call<List<Package?>?>, t: Throwable) {
+                var packages = listOf<Package>()
+                handleResponse(packages)
+            }
 
-        if(CheckPackages(packages)) return packages
+            override fun onResponse(call: Call<List<Package?>?>, response: Response<List<Package?>?>) {
+                var packages = response.body()
 
-        return null
+                if (!checkPackagesValidity(packages))
+                {
+                    packages = listOf<Package>()
+                }
+
+                handleResponse(packages)
+            }
+        })
     }
 
-    override fun deletePackage() {
-        throw NotImplementedError()
+    override fun deletePackage(packageId: String, handleResponse: (packageObject: Package?) -> Unit) {
+        var call = remoteDatabaseAPI.packagerDeletePackage(packageId)
+
+        call?.enqueue(object: Callback<Package?>{
+            override fun onFailure(call: Call<Package?>, t: Throwable) {
+                handleResponse(null)
+            }
+
+            override fun onResponse(call: Call<Package?>, response: Response<Package?>) {
+                var deletedPackage = response.body()
+
+                if(!checkPackageValidity(deletedPackage))
+                {
+                    handleResponse(null)
+                    return
+                }
+
+                handleResponse(deletedPackage)
+            }
+        })
     }
 
-    private fun CheckPackages(packages : List<Package?>?) : Boolean
+    private fun checkPackagesValidity(packages : List<Package?>?) : Boolean
     {
         if(packages == null) return false
 
         for (packageItem in packages!!) {
-            if (!CheckPackageValidity(packageItem)) return false;
+            if (!checkPackageValidity(packageItem)) return false;
         }
 
         return true
     }
 
-    private fun CheckPackageValidity(packageObject: Package?) : Boolean
+    private fun checkPackageValidity(packageObject: Package?) : Boolean
     {
         //TODO: Implement properly
         return true

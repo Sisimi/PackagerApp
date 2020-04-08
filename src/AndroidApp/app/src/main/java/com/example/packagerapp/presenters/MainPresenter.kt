@@ -36,7 +36,13 @@ class MainPresenter
         })
     }
 
+    fun addPackage() {
 
+    }
+
+    fun modifyPackage() {
+
+    }
 
     fun searchPackages(packageName: String){
         throw NotImplementedError()
