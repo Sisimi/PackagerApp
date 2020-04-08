@@ -9,7 +9,7 @@ import com.example.packagerapp.R
 import com.example.packagerapp.di.DaggerMainPresenterComponent
 import com.example.packagerapp.di.MainPresenterComponent
 import com.example.packagerapp.misc.appContext
-import com.example.packagerapp.models.Package
+import com.example.packagerapp.models.MyPackage
 import com.example.packagerapp.presenters.AddPackagePresenter
 import com.example.packagerapp.presenters.MainPresenter
 import com.example.packagerapp.screens.MainScreen
@@ -28,6 +28,9 @@ class MainActivity : AppCompatActivity(), MainScreen {
 
         appContext = applicationContext
 
+        mainPresenterComponent.inject(this)
+
+
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
@@ -36,7 +39,7 @@ class MainActivity : AppCompatActivity(), MainScreen {
                     .setAction("Action", null).show()
         }
 
-        mainPresenterComponent.inject(this)
+
         mainPresenter.attachScreen(this)
 
         mainPresenter.getPackages()
@@ -58,11 +61,11 @@ class MainActivity : AppCompatActivity(), MainScreen {
         }
     }
 
-    override fun openPackageInfoActivity(packageObject: Package) {
+    override fun openPackageInfoActivity(packageObject: MyPackage) {
         TODO("Not yet implemented")
     }
 
-    override fun refreshList(packages: List<Package?>?) {
+    override fun refreshList(packages: List<MyPackage?>?) {
         var asd : Package? = null
         TODO("Not yet implemented")
     }

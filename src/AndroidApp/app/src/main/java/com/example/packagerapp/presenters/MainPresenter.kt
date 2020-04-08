@@ -1,19 +1,16 @@
 package com.example.packagerapp.presenters
 
-import android.util.Log
-import com.example.packagerapp.interactors.RemoteDatabaseInteractor
-import com.example.packagerapp.interactors.IRemoteDatabaseInteractor
-import com.example.packagerapp.models.Package
+import com.example.packagerapp.interactors.APIs.IRemoteDatabaseInteractor
+import com.example.packagerapp.interactors.repositories.ILocalDatabaseRepository
+import com.example.packagerapp.models.MyPackage
 import com.example.packagerapp.screens.MainScreen
-import dagger.Module
-import dagger.Provides
-import retrofit2.Call
 import javax.inject.Inject
-import retrofit2.Callback
-import retrofit2.Response
 
 class MainPresenter
-    @Inject constructor(private var databaseInteractor: IRemoteDatabaseInteractor)
+    @Inject constructor(
+        private var remoteDatabaseInteractor: IRemoteDatabaseInteractor,
+        private var localDatabaseRepository: ILocalDatabaseRepository
+    )
     : AbstractPresenter<MainScreen>() {
 
     private val packagesCache: List<Package>? = null
@@ -31,9 +28,11 @@ class MainPresenter
     }
 
     fun getPackages() {
-        databaseInteractor.getPackages ( fun (packages:List<Package?>?){
+        remoteDatabaseInteractor.getPackages ( fun (packages:List<MyPackage?>?){
             screen?.refreshList(packages)
         })
+
+        var result = localDatabaseRepository.getAll()
     }
 
     fun addPackage() {

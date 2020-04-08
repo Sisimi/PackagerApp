@@ -2,12 +2,11 @@ package com.example.packagerapp.di
 
 import com.example.packagerapp.R
 import com.example.packagerapp.interactors.APIs.IRemoteDatabaseAPI
-import com.example.packagerapp.interactors.IRemoteDatabaseInteractor
-import com.example.packagerapp.interactors.RemoteDatabaseInteractor
+import com.example.packagerapp.interactors.APIs.IRemoteDatabaseInteractor
+import com.example.packagerapp.interactors.APIs.RemoteDatabaseInteractor
 import com.example.packagerapp.misc.appContext
 import dagger.Module
 import dagger.Provides
-import okhttp3.CertificatePinner
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

@@ -1,5 +1,6 @@
 package com.example.packagerapp.models
 
-data class NameValue(var name: String,
-                     var value: String
+
+data class NameValue(val name: String,
+                     val value: String
 )

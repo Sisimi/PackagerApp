@@ -1,20 +1,16 @@
 package com.example.packagerapp
 
 import android.util.Log
-import com.example.packagerapp.di.DaggerMainPresenterComponent
-import com.example.packagerapp.di.MainPresenterComponent
 import com.example.packagerapp.interactors.APIs.IRemoteDatabaseAPI
-import com.example.packagerapp.interactors.IRemoteDatabaseInteractor
-import com.example.packagerapp.interactors.RemoteDatabaseInteractor
+import com.example.packagerapp.interactors.APIs.IRemoteDatabaseInteractor
+import com.example.packagerapp.interactors.APIs.RemoteDatabaseInteractor
 import com.example.packagerapp.models.Package
-import com.example.packagerapp.presenters.MainPresenter
 import okhttp3.OkHttpClient
 import org.junit.Test
 
 import org.junit.Assert.*
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import javax.inject.Inject
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -52,7 +48,10 @@ class ExampleUnitTest {
             retrofit.create(IRemoteDatabaseAPI::class.java)
         }
 
-        remoteDatabaseInteractor = RemoteDatabaseInteractor(remoteDatabaseAPIInstance)
+        remoteDatabaseInteractor =
+            RemoteDatabaseInteractor(
+                remoteDatabaseAPIInstance
+            )
     }
 
 

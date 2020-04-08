@@ -2,10 +2,10 @@ package com.example.packagerapp.presenters
 
 import com.example.packagerapp.models.NameValue
 import com.example.packagerapp.screens.AddPackageScreen
-import com.example.packagerapp.models.Package
+import com.example.packagerapp.models.MyPackage
 
 object AddPackagePresenter : AbstractPresenter<AddPackageScreen>(){
-    val newPackage = Package(null, null, null, null)
+    val newPackage = MyPackage("", null, null, null)
 
     override fun attachScreen(screen: AddPackageScreen) {
         super.attachScreen(screen)

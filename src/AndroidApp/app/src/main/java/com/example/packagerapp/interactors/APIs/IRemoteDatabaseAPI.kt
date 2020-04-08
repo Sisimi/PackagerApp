@@ -8,21 +8,21 @@ import com.example.packagerapp.models.*;
 interface IRemoteDatabaseAPI {
 
     @GET("packages")
-    fun packagerGetAllPackages(): Call<List<Package?>?>?
+    fun packagerGetAllPackages(): Call<List<MyPackage?>?>?
 
     @Headers("Content-Type:application/json")
     @PUT("package/add")
     fun packagerPutOrUpdatePackage(
-        @Body packageObject: Package?
-    ): Call<Package?>?
+        @Body packageObject: MyPackage?
+    ): Call<MyPackage?>?
 
     @GET("package/{searchString}")
     fun packagerGetSpecificPackages(
         @Path("searchString") searchString: String?
-    ): Call<List<Package?>?>?
+    ): Call<List<MyPackage?>?>?
 
     @DELETE("package/delete/{Id}")
     fun packagerDeletePackage(
         @Path("Id") Id: String?
-    ): Call<Package?>?
+    ): Call<MyPackage?>?
 }

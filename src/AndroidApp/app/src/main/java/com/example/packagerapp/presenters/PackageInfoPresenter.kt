@@ -1,6 +1,6 @@
 package com.example.packagerapp.presenters
 
-import com.example.packagerapp.models.Package
+import com.example.packagerapp.models.MyPackage
 import com.example.packagerapp.screens.PackageInfoScreen
 
 object PackageInfoPresenter: AbstractPresenter<PackageInfoScreen>(){
