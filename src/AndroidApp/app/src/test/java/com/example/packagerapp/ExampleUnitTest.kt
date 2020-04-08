@@ -4,7 +4,8 @@ import android.util.Log
 import com.example.packagerapp.interactors.APIs.IRemoteDatabaseAPI
 import com.example.packagerapp.interactors.APIs.IRemoteDatabaseInteractor
 import com.example.packagerapp.interactors.APIs.RemoteDatabaseInteractor
-import com.example.packagerapp.models.Package
+import com.example.packagerapp.models.MyPackage
+
 import okhttp3.OkHttpClient
 import org.junit.Test
 
@@ -62,7 +63,7 @@ class ExampleUnitTest {
 
     @Test
     fun PackagerAPITest() {
-        remoteDatabaseInteractor.getPackages(fun(packages:List<Package?>?){
+        remoteDatabaseInteractor.getPackages(fun(packages:List<MyPackage?>?){
             Log.println(10,"Hello","Hello!")
         })
     }

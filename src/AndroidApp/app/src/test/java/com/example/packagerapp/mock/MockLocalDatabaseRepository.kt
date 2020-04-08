@@ -16,20 +16,23 @@ class MockLocalDatabaseRepository : ILocalDatabaseRepository {
 
     }
 
-    override fun insert(packageObject: MyPackage) {
-        TODO("Not yet implemented")
+    override fun insert(packageObject: MyPackage): MyPackage {
+        mockpackageDatabase.add(packageObject)
+        return packageObject
     }
 
-    override fun delete(packageId: String) {
-        delete(packageId)
+    override fun delete(packageObject: MyPackage): MyPackage {
+        mockpackageDatabase.remove(packageObject)
+        return packageObject
     }
 
     override fun getAll(): List<MyPackage?>? {
         return mockpackageDatabase
     }
 
-    override fun update(packageObject: MyPackage) {
+    override fun update(packageObject: MyPackage): MyPackage? {
         mockpackageDatabase.add(packageObject)
+        return packageObject
     }
 
 }
