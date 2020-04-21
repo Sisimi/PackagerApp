@@ -1,7 +1,7 @@
-package com.example.packagerapp.di
+package com.example.packagerapp.di.mainpresenter
 
-import com.example.packagerapp.presenters.MainPresenter
-import com.example.packagerapp.views.MainActivity
+import com.example.packagerapp.di.RemoteDatabaseInteractorModule
+import com.example.packagerapp.views.main.MainActivity
 import dagger.Component
 import javax.inject.Singleton
 

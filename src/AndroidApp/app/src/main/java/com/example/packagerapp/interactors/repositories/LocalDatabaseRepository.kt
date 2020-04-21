@@ -46,7 +46,7 @@ class LocalDatabaseRepository @Inject constructor() :
         return null
     }
 
-    override fun getAll(): List<MyPackage?>? {
+    override fun getAll(): List<MyPackage>? {
         var getAllPackagesAsyncTask = RepositoryHelper.GetAllPackagesAsyncTask(
             myPackageDAO
         )

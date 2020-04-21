@@ -1,4 +1,4 @@
-package com.example.packagerapp.views.dialogs
+package com.example.packagerapp.views.addpackage.dialogs
 
 import android.app.Activity
 import android.app.AlertDialog
@@ -7,6 +7,7 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatDialogFragment
 import com.example.packagerapp.R
 import com.example.packagerapp.models.NameValue
@@ -27,14 +28,22 @@ class ValueDialog(view: View) : AppCompatDialogFragment() {
         return AlertDialog.Builder(activity)
             .setView(view)
             .setTitle("Add value to Package")
-            .setNegativeButton("Cancel", DialogInterface.OnClickListener(){dialog, which ->
+            .setNegativeButton("Cancel", DialogInterface.OnClickListener(){ _, _ ->
 
             })
-            .setPositiveButton("Ok", DialogInterface.OnClickListener(){dialog, which ->
+            .setPositiveButton("Ok", DialogInterface.OnClickListener(){ _, _ ->
                 var valueName = editTextName.text.toString()
                 var value = editTextValue.text.toString()
 
-                listener.setNameValuePair(NameValue(valueName, value))
+                if(valueName == "" || valueName == null ||
+                        value == "" || value == null)
+                {
+                    Toast.makeText(activity, "Not all input has been filled!",Toast.LENGTH_SHORT)
+                }
+                else
+                {
+                    listener.setNameValuePair(NameValue(valueName, value))
+                }
             })
             .create()
     }

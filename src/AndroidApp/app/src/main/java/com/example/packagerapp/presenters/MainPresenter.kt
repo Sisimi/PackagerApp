@@ -13,15 +13,7 @@ class MainPresenter
     )
     : AbstractPresenter<MainScreen>() {
 
-    private val packagesCache: List<Package>? = null
-
-    override fun attachScreen(screen: MainScreen) {
-        super.attachScreen(screen)
-    }
-
-    override fun detachScreen() {
-        super.detachScreen()
-    }
+    private var packagesCache: List<MyPackage>? = localDatabaseRepository.getAll()
 
     fun startQRScan() {
         throw NotImplementedError()

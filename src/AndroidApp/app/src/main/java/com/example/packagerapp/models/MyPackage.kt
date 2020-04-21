@@ -9,12 +9,12 @@ import com.google.gson.annotations.SerializedName
 
 @Entity
 data class MyPackage(
-    @PrimaryKey val id: String,
-    @ColumnInfo(name = "packageName") val packageName: String?,
-    @ColumnInfo(name = "description") val description: String?,
+    @PrimaryKey var id: String,
+    @ColumnInfo(name = "packageName") var packageName: String,
+    @ColumnInfo(name = "description") var description: String,
 
     @TypeConverters(NameValueConverter::class)
     @SerializedName("nameValueList")
-    val nameValueList: List<NameValue>?
+    val nameValueList: MutableList<NameValue>
 )
 

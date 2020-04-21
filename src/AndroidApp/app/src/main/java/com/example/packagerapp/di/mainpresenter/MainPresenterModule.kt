@@ -1,4 +1,4 @@
-package com.example.packagerapp.di
+package com.example.packagerapp.di.mainpresenter
 
 
 import com.example.packagerapp.interactors.APIs.IRemoteDatabaseAPI

@@ -13,7 +13,7 @@ import com.example.packagerapp.models.NameValue
 import com.example.packagerapp.models.MyPackage
 
 
-@Database(entities = [MyPackage::class], version = 1)
+@Database(entities = [MyPackage::class], version = 2)
 @TypeConverters(NameValueConverter::class)
 abstract class MyPackagesDatabase: RoomDatabase() {
 

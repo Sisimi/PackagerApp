@@ -1,48 +1,51 @@
-package com.example.packagerapp.views
+package com.example.packagerapp.views.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.packagerapp.R
-import com.example.packagerapp.di.DaggerMainPresenterComponent
-import com.example.packagerapp.di.MainPresenterComponent
+import com.example.packagerapp.di.mainpresenter.DaggerMainPresenterComponent
+import com.example.packagerapp.di.mainpresenter.MainPresenterComponent
 import com.example.packagerapp.misc.appContext
 import com.example.packagerapp.models.MyPackage
 import com.example.packagerapp.presenters.MainPresenter
 import com.example.packagerapp.screens.MainScreen
-import com.example.packagerapp.views.recycleview.PackageItem
-import com.example.packagerapp.views.recycleview.PackageItemAdapter
-import kotlinx.android.synthetic.main.activity_add_package.*
-import kotlinx.android.synthetic.main.activity_main.*
+import com.example.packagerapp.views.addpackage.AddPackageActivity
+import com.example.packagerapp.views.PackageInfoActivity
+import com.example.packagerapp.views.main.recycleview.PackageItem
+import com.example.packagerapp.views.main.recycleview.PackageItemAdapter
 import kotlinx.android.synthetic.main.activity_main.addPackageFB
-import kotlinx.android.synthetic.main.activity_main.mainToolbar
 import kotlinx.android.synthetic.main.toolbar.*
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), MainScreen {
-
     @Inject lateinit var mainPresenter: MainPresenter
     var mainPresenterComponent : MainPresenterComponent = DaggerMainPresenterComponent.create()
+
     private lateinit var recyclerView: RecyclerView
     private lateinit var recyclerViewAdapter : RecyclerView.Adapter<PackageItemAdapter.PackageItemViewHolder>
     private lateinit var recycleViewLayoutManager: RecyclerView.LayoutManager
+    private var packageItems = mutableListOf<PackageItem>()
 
 
 //TODO:extract Initial steps to respective methods
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
 
         appContext = applicationContext
         mainPresenterComponent.inject(this)
+        mainPresenter.attachScreen(this)
 
-        setContentView(R.layout.activity_main)
+        initViews()
 
+        mainPresenter.addPackage()
+    }
+
+    private fun initViews() {
         searchEditText.visibility = View.VISIBLE
         searchIcon.visibility = View.VISIBLE
 
@@ -59,25 +62,16 @@ class MainActivity : AppCompatActivity(), MainScreen {
             startActivity(intent)
         }
 
-        //RecyclerViewInit
+        initRecycleView()
+    }
+
+    private fun initRecycleView() {
         recyclerView = findViewById(R.id.packageItemsRecycleView)
         recycleViewLayoutManager = LinearLayoutManager(this)
+        recyclerViewAdapter = PackageItemAdapter(packageItems)
 
-        //RecycleViewTest
-        val items = mutableListOf<PackageItem>()
-        for (i in (0..99))
-        {
-            items.add(PackageItem(R.drawable.ic_box_solid, "PackageTest" + i))
-        }
-
-        recyclerViewAdapter = PackageItemAdapter(items)
         recyclerView.layoutManager = recycleViewLayoutManager
         recyclerView.adapter = recyclerViewAdapter
-
-
-        mainPresenter.attachScreen(this)
-
-        //mainPresenter.getPackages()
     }
 
     override fun openPackageInfoActivity(packageObject: MyPackage) {

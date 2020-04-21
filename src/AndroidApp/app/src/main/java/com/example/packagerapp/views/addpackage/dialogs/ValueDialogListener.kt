@@ -1,4 +1,4 @@
-package com.example.packagerapp.views.dialogs
+package com.example.packagerapp.views.addpackage.dialogs
 
 import com.example.packagerapp.models.NameValue
 
