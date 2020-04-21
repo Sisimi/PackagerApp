@@ -1,7 +1,5 @@
 package com.example.packagerapp.interactors.APIs
 
-import com.example.packagerapp.interactors.APIs.IRemoteDatabaseAPI
-import com.example.packagerapp.interactors.APIs.IRemoteDatabaseInteractor
 import com.example.packagerapp.models.MyPackage
 import retrofit2.Call
 import retrofit2.Callback

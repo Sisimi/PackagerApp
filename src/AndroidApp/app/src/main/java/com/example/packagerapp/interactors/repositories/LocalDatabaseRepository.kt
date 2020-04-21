@@ -17,7 +17,6 @@ class LocalDatabaseRepository @Inject constructor() :
         val database: MyPackagesDatabase = MyPackagesDatabase.getInstance(appContext!!)
 
         myPackageDAO = database.packageDAO()
-
     }
 
 

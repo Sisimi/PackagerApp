@@ -48,7 +48,7 @@ namespace PackagerWebAPI.Controllers
 
         [HttpDelete]
         [Route("package/delete/{id}")]
-        public async Task<ActionResult<Package>> DeletePackage(string Id)
+        public async Task<ActionResult<Package>> DeletePackage(string id)
         {
             throw new NotImplementedException();
         }
