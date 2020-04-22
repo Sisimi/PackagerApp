@@ -7,20 +7,19 @@ import com.example.packagerapp.models.NameValue
 import com.example.packagerapp.screens.AddPackageScreen
 import com.example.packagerapp.models.MyPackage
 import kotlinx.android.synthetic.main.activity_add_package.*
+import java.util.*
 import javax.inject.Inject
 
 class AddPackagePresenter  @Inject constructor(
     private var localDatabaseRepository: ILocalDatabaseRepository
 ) : AbstractPresenter<AddPackageScreen>(){
     //TODO:maybe the model is not good because it demands an id, which must be handled on server side later
-    var myPackage = MyPackage("","","", mutableListOf())
+    var myPackage = GenerateNewPackage()
 
 
     fun addPackageToDB()
     {
         localDatabaseRepository.insert(myPackage)
-        //TODO: megnezni h szukseges e ez
-        myPackage = MyPackage("","","", mutableListOf())
     }
 
     fun setMyPackageDescription(desc: String){
@@ -65,6 +64,11 @@ class AddPackagePresenter  @Inject constructor(
     private fun normalizeInput(input: String) : String
     {
         return input
+    }
+
+    private fun GenerateNewPackage() : MyPackage
+    {
+        return MyPackage(UUID.randomUUID().toString(), "","", mutableListOf())
     }
 
 }

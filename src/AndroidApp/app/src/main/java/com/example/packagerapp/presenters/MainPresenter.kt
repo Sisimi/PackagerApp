@@ -4,6 +4,7 @@ import com.example.packagerapp.interactors.APIs.IRemoteDatabaseInteractor
 import com.example.packagerapp.interactors.repositories.ILocalDatabaseRepository
 import com.example.packagerapp.models.MyPackage
 import com.example.packagerapp.screens.MainScreen
+import java.util.function.Predicate
 import javax.inject.Inject
 
 class MainPresenter
@@ -13,29 +14,45 @@ class MainPresenter
     )
     : AbstractPresenter<MainScreen>() {
 
-    private var packagesCache: List<MyPackage>? = localDatabaseRepository.getAll()
+    init {
+
+    }
 
     fun startQRScan() {
-        throw NotImplementedError()
+        //TODO: implement the scan logic in the future
+        //temporary solution
+        var temp = localDatabaseRepository.getAll()
+
+        if(temp != null && temp.count() > 0)
+        {
+            screen!!.handleScanResult(temp[0])
+        }
+        else
+        {
+            screen!!.handleScanResult(null)
+        }
     }
 
-    fun getPackages() {
-        remoteDatabaseInteractor.getPackages ( fun (packages:List<MyPackage?>?){
-            screen?.refreshList(packages)
-        })
-
-        var result = localDatabaseRepository.getAll()
+    fun getLocalData() : MutableList<MyPackage> {
+        return localDatabaseRepository.getAll() ?: mutableListOf()
     }
 
-    fun addPackage() {
+    fun deletePackage(id: String)
+    {
+        localDatabaseRepository.delete(id)
+
+        remoteDatabaseInteractor.deletePackage(id) { returnedData ->
+            //currently nothing
+        }
 
     }
 
-    fun modifyPackage() {
+    fun refreshDB() {
+        var localPackages = localDatabaseRepository.getAll() ?: mutableListOf()
 
+        remoteDatabaseInteractor.addManyPackages(localPackages)
     }
 
-    fun searchPackages(packageName: String){
-        throw NotImplementedError()
-    }
+
+
 }

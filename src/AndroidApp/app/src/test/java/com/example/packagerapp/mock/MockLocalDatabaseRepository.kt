@@ -8,9 +8,10 @@ class MockLocalDatabaseRepository : ILocalDatabaseRepository {
     var mockpackageDatabase : MutableList<MyPackage>
 
     init {
-        val testPackage1: MyPackage = MyPackage("-1","Test1", "", null)
+        val testPackage1: MyPackage = MyPackage("-1","Test1", "", mutableListOf())
         val testPackage2: MyPackage = MyPackage("-2","Test2", "",
-            listOf(NameValue("name1","value1"), NameValue("name2","value2")))
+            mutableListOf(NameValue("name1","value1"), NameValue("name2","value2"))
+        )
 
         mockpackageDatabase = mutableListOf(testPackage1, testPackage2)
 
@@ -26,7 +27,7 @@ class MockLocalDatabaseRepository : ILocalDatabaseRepository {
         return packageObject
     }
 
-    override fun getAll(): List<MyPackage?>? {
+    override fun getAll(): List<MyPackage>? {
         return mockpackageDatabase
     }
 

@@ -16,11 +16,23 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/valueAndNameTextView"
+        android:id="@+id/packageInfoDescriptionTextView"
         android:layout_width="329dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="16dp"
+        android:text="Package Description"
+        android:textColor="@color/colorTextOnLightColor"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/packageInfoNameTextView" />
+
+    <TextView
+        android:id="@+id/packageInfoNameTextView"
+        android:layout_width="329dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
         android:text="PackageName"
         android:textColor="@color/colorTextOnLightColor"
         android:textSize="36sp"
@@ -31,9 +43,9 @@
         android:id="@+id/packageValueRecycleView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/valueAndNameTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/packageInfoDescriptionTextView" />
 </androidx.constraintlayout.widget.ConstraintLayout>

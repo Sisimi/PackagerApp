@@ -27,20 +27,20 @@ object RepositoryHelper {
         }
     }
 
-    class DeletePackageAsyncTask constructor(packageDAO: MyPackageDAO) : AsyncTask<MyPackage, Unit, Int>()
+    class DeletePackageAsyncTask constructor(packageDAO: MyPackageDAO) : AsyncTask<String, Unit, Int>()
     {
         private var dao = packageDAO
 
-        override fun doInBackground(vararg params: MyPackage?): Int? {
+        override fun doInBackground(vararg params: String?): Int? {
             return dao.deletePackage(params[0]!!)
         }
     }
 
-    class GetAllPackagesAsyncTask constructor(packageDAO: MyPackageDAO) : AsyncTask<Unit, Unit, List<MyPackage>?>()
+    class GetAllPackagesAsyncTask constructor(packageDAO: MyPackageDAO) : AsyncTask<Unit, Unit, MutableList<MyPackage>?>()
     {
         private var dao = packageDAO
 
-        override fun doInBackground(vararg params: Unit?): List<MyPackage>? {
+        override fun doInBackground(vararg params: Unit?):  MutableList<MyPackage>? {
             return dao.getPackages()
         }
     }

@@ -1,4 +1,4 @@
-package com.example.packagerapp.views.addpackage.recycleview
+package com.example.packagerapp.views.addpackage.recyclerview
 
 class ValueItem(imageResource : Int, removeImageResource: Int, nameAndValue:String) {
     var imageResource: Int = imageResource

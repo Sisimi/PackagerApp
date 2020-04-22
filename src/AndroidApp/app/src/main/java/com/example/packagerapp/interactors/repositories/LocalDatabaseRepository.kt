@@ -30,23 +30,19 @@ class LocalDatabaseRepository @Inject constructor() :
         return packageObject
     }
 
-    override fun delete(packageObject: MyPackage): MyPackage? {
+    override fun delete(id:String) {
         var deletePackageTask =
-            RepositoryHelper.DeletePackageAsyncTask(
-                myPackageDAO
-            )
+            RepositoryHelper.DeletePackageAsyncTask(myPackageDAO)
 
-        deletePackageTask.execute(packageObject)
+        deletePackageTask.execute(id)
 
         if(deletePackageTask.get() > 0)
         {
-            return packageObject
+            return
         }
-
-        return null
     }
 
-    override fun getAll(): List<MyPackage>? {
+    override fun getAll(): MutableList<MyPackage>? {
         var getAllPackagesAsyncTask = RepositoryHelper.GetAllPackagesAsyncTask(
             myPackageDAO
         )

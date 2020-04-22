@@ -1,4 +1,5 @@
-﻿using PackagerWebAPI.Models;
+﻿using Microsoft.AspNetCore.Mvc;
+using PackagerWebAPI.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,7 @@ namespace PackagerWebAPI.Services
         Task<Package> AddPackage(Package package);
         Task<List<Package>> GetPackages();
         Task<List<Package>> GetSpecificPackages(string searchString);
+        Task<Package> DeletePackage(string id);
+        Task AddManyPackage(List<Package> packages);
     }
 }

@@ -63,9 +63,12 @@ class ExampleUnitTest {
 
     @Test
     fun PackagerAPITest() {
+        /*
         remoteDatabaseInteractor.getPackages(fun(packages:List<MyPackage?>?){
             Log.println(10,"Hello","Hello!")
         })
+
+         */
     }
 
 

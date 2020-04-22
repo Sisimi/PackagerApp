@@ -10,16 +10,16 @@ class RemoteDatabaseInteractor
 @Inject constructor(private var remoteDatabaseAPI: IRemoteDatabaseAPI)
     : IRemoteDatabaseInteractor {
 
-    override fun getPackages(handleResponse: (packages: List<MyPackage?>?) -> Unit){
+    override fun getPackages(handleResponse: (packages: List<MyPackage>?) -> Unit){
         var call = remoteDatabaseAPI.packagerGetAllPackages()
 
-        call?.enqueue(object: Callback<List<MyPackage?>?>{
-            override fun onFailure(call: Call<List<MyPackage?>?>, t: Throwable) {
+        call?.enqueue(object: Callback<List<MyPackage>?>{
+            override fun onFailure(call: Call<List<MyPackage>?>, t: Throwable) {
                 var packages = listOf<MyPackage>()
                 handleResponse(packages)
             }
 
-            override fun onResponse(call: Call<List<MyPackage?>?>, response: Response<List<MyPackage?>?>) {
+            override fun onResponse(call: Call<List<MyPackage>?>, response: Response<List<MyPackage>?>) {
                 var packages = response.body()
 
                 if (!checkPackagesValidity(packages))
@@ -54,21 +54,21 @@ class RemoteDatabaseInteractor
         })
     }
 
-    override fun getPackagesBasedOnSearch(searchString: String, handleResponse: (packages: List<MyPackage?>?) -> Unit){
+    override fun getPackagesBasedOnSearch(searchString: String, handleResponse: (packages: List<MyPackage>?) -> Unit){
         var call = remoteDatabaseAPI.packagerGetSpecificPackages(searchString)
 
-        call?.enqueue(object: Callback<List<MyPackage?>?>{
-            override fun onFailure(call: Call<List<MyPackage?>?>, t: Throwable) {
+        call?.enqueue(object: Callback<List<MyPackage>?>{
+            override fun onFailure(call: Call<List<MyPackage>?>, t: Throwable) {
                 var packages = listOf<MyPackage>()
                 handleResponse(packages)
             }
 
-            override fun onResponse(call: Call<List<MyPackage?>?>, response: Response<List<MyPackage?>?>) {
+            override fun onResponse(call: Call<List<MyPackage>?>, response: Response<List<MyPackage>?>) {
                 var packages = response.body()
 
                 if (!checkPackagesValidity(packages))
                 {
-                    packages = listOf<MyPackage>()
+                    packages = listOf()
                 }
 
                 handleResponse(packages)
@@ -94,6 +94,20 @@ class RemoteDatabaseInteractor
                 }
 
                 handleResponse(deletedPackage)
+            }
+        })
+    }
+
+    override fun addManyPackages(packageList: MutableList<MyPackage>) {
+        var call = remoteDatabaseAPI.packagerPutManyPackage(packageList.toList())
+
+        call?.enqueue(object: Callback<Unit?>{
+            override fun onFailure(call: Call<Unit?>, t: Throwable) {
+
+            }
+
+            override fun onResponse(call: Call<Unit?>, response: Response<Unit?>) {
+
             }
         })
     }

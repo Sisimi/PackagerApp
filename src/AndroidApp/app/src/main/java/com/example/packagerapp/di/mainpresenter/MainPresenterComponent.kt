@@ -8,6 +8,5 @@ import javax.inject.Singleton
 @Singleton
 @Component (modules = [MainPresenterModule::class, RemoteDatabaseInteractorModule::class])
 interface MainPresenterComponent {
-    //fun getMainPresenter(): MainPresenter
     fun inject(mainActivity: MainActivity)
 }

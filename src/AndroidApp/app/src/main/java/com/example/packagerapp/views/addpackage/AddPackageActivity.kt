@@ -4,32 +4,27 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
-import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.packagerapp.R
 import com.example.packagerapp.di.addpackagepresenter.AddPackagePresenterComponent
 import com.example.packagerapp.di.addpackagepresenter.DaggerAddPackagePresenterComponent
-import com.example.packagerapp.di.mainpresenter.MainPresenterComponent
-import com.example.packagerapp.models.MyPackage
 import com.example.packagerapp.models.NameValue
 import com.example.packagerapp.presenters.AddPackagePresenter
 import com.example.packagerapp.screens.AddPackageScreen
-import com.example.packagerapp.views.PackageInfoActivity
-import com.example.packagerapp.views.addpackage.recycleview.ValueItem
-import com.example.packagerapp.views.addpackage.recycleview.ValueItemAdapter
+import com.example.packagerapp.views.packageinfoActivity.PackageInfoActivity
+import com.example.packagerapp.views.addpackage.recyclerview.ValueItem
+import com.example.packagerapp.views.addpackage.recyclerview.ValueItemAdapter
 import com.example.packagerapp.views.addpackage.dialogs.ValueDialog
 import com.example.packagerapp.views.addpackage.dialogs.ValueDialogListener
-import com.example.packagerapp.views.addpackage.recycleview.NotifyActivity
 import com.example.packagerapp.views.main.MainActivity
 import kotlinx.android.synthetic.main.activity_add_package.*
 import kotlinx.android.synthetic.main.toolbar.*
 import javax.inject.Inject
 
-class AddPackageActivity : AppCompatActivity(), ValueDialogListener, NotifyActivity, AddPackageScreen {
-    var addPackagePresenterComponent : AddPackagePresenterComponent = DaggerAddPackagePresenterComponent.create()
+class AddPackageActivity : AppCompatActivity(), ValueDialogListener, AddPackageScreen {
+    //var addPackagePresenterComponent : AddPackagePresenterComponent = DaggerAddPackagePresenterComponent.create()
     @Inject lateinit var addPackagePresenter : AddPackagePresenter
 
     private lateinit var recyclerView : RecyclerView
@@ -42,15 +37,16 @@ class AddPackageActivity : AppCompatActivity(), ValueDialogListener, NotifyActiv
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_package)
 
-        addPackagePresenterComponent.inject(this)
+        //addPackagePresenterComponent.inject(this)
+        DaggerAddPackagePresenterComponent.create().inject(this)
         addPackagePresenter.attachScreen(this)
 
         initViews()
     }
 
     private fun initViews() {
-        searchEditText.visibility = View.INVISIBLE
-        searchIcon.visibility = View.INVISIBLE
+        searchPackagesSearchView.visibility = View.INVISIBLE
+
 
         scanQRImageView.setOnClickListener()
         { _ ->
@@ -99,6 +95,8 @@ class AddPackageActivity : AppCompatActivity(), ValueDialogListener, NotifyActiv
 
         valueItems.add(ValueItem(R.drawable.ic_tools_solid, R.drawable.ic_remove_circle_outline_black_24dp, nameValue.name + " : " + nameValue.value))
         adapter.notifyItemInserted(valueItems.count() - 1)
+
+        packageDescriptionEditText.clearFocus()
     }
 
     override fun notifyOnItemRemoved(position: Int) {

@@ -7,14 +7,14 @@ import com.example.packagerapp.models.MyPackage
 @Dao
 interface MyPackageDAO {
     @Query(value = "Select * FROM MyPackage")
-    fun getPackages() : List<MyPackage>
+    fun getPackages() : MutableList<MyPackage>
 
     @Insert
     fun insertNewPackage(packageObject: MyPackage)
 
-    //@Query(value = "DELETE FROM MyPackage WHERE id = :packageId")
-    @Delete
-    fun deletePackage(packageObject: MyPackage): Int
+    @Query(value = "DELETE FROM MyPackage WHERE id = :packageId")
+    //@Delete
+    fun deletePackage(packageId:String): Int
 
     @Update
     fun updatePackage(packageObject: MyPackage): Int

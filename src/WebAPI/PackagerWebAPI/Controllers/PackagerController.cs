@@ -46,11 +46,22 @@ namespace PackagerWebAPI.Controllers
             return await packagerDBRepository.AddPackage(package);
         }
 
+        [HttpPut]
+        [Route("package/addMany")]
+        public async Task<ActionResult> PutManyPackage(List<Package> packages)
+        {
+            if (packages.Count > 0)
+            {
+                await packagerDBRepository.AddManyPackage(packages);    
+            }
+            return Ok();
+        }
+
         [HttpDelete]
         [Route("package/delete/{id}")]
         public async Task<ActionResult<Package>> DeletePackage(string id)
         {
-            throw new NotImplementedException();
+            return await packagerDBRepository.DeletePackage(id);
         }
 
     }

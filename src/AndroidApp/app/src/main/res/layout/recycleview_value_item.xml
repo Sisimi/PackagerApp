@@ -18,7 +18,7 @@
         app:srcCompat="@drawable/ic_tools_solid" />
 
     <TextView
-        android:id="@+id/valueAndNameTextView"
+        android:id="@+id/packageInfoDescriptionTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
