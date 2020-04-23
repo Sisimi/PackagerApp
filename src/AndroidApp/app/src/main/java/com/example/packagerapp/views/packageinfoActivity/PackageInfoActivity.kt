@@ -7,6 +7,7 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.packagerapp.R
+import com.example.packagerapp.di.interactors.LocalDatabaseInteractorModule
 import com.example.packagerapp.di.packageinfopresenter.DaggerPackageInfoPresenterComponent
 import com.example.packagerapp.models.MyPackage
 import com.example.packagerapp.models.NameValue
@@ -29,7 +30,11 @@ class PackageInfoActivity : AppCompatActivity(), PackageInfoScreen {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_package_info)
 
-        DaggerPackageInfoPresenterComponent.create().inject(this)
+        DaggerPackageInfoPresenterComponent.builder()
+            .localDatabaseInteractorModule(LocalDatabaseInteractorModule(applicationContext))
+            .build()
+            .inject(this)
+
         packageInfoPresenter.attachScreen(this)
 
         packageInfoPresenter.myPackage = intent.getParcelableExtra("Package Item")!!

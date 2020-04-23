@@ -13,9 +13,8 @@ import javax.inject.Inject
 class AddPackagePresenter  @Inject constructor(
     private var localDatabaseRepository: ILocalDatabaseRepository
 ) : AbstractPresenter<AddPackageScreen>(){
-    //TODO:maybe the model is not good because it demands an id, which must be handled on server side later
-    var myPackage = GenerateNewPackage()
 
+    var myPackage = GenerateNewPackage()
 
     fun addPackageToDB()
     {

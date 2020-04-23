@@ -1,4 +1,4 @@
-package com.example.packagerapp.views
+package com.example.packagerapp.views.about
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity

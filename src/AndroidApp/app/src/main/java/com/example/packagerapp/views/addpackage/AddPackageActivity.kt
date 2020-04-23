@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.packagerapp.R
 import com.example.packagerapp.di.addpackagepresenter.AddPackagePresenterComponent
 import com.example.packagerapp.di.addpackagepresenter.DaggerAddPackagePresenterComponent
+import com.example.packagerapp.di.interactors.LocalDatabaseInteractorModule
 import com.example.packagerapp.models.NameValue
 import com.example.packagerapp.presenters.AddPackagePresenter
 import com.example.packagerapp.screens.AddPackageScreen
@@ -38,7 +39,11 @@ class AddPackageActivity : AppCompatActivity(), ValueDialogListener, AddPackageS
         setContentView(R.layout.activity_add_package)
 
         //addPackagePresenterComponent.inject(this)
-        DaggerAddPackagePresenterComponent.create().inject(this)
+        DaggerAddPackagePresenterComponent.builder()
+            .localDatabaseInteractorModule(LocalDatabaseInteractorModule(applicationContext))
+            .build()
+            .inject(this)
+
         addPackagePresenter.attachScreen(this)
 
         initViews()

@@ -1,4 +1,4 @@
-package com.example.packagerapp.delete
+package com.example.packagerapp.models
 
 import androidx.room.TypeConverter
 import com.example.packagerapp.models.NameValue

@@ -5,11 +5,8 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import androidx.room.migration.Migration
-import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.packagerapp.data.DAOs.MyPackageDAO
-import com.example.packagerapp.delete.NameValueConverter
-import com.example.packagerapp.models.NameValue
+import com.example.packagerapp.models.NameValueConverter
 import com.example.packagerapp.models.MyPackage
 
 

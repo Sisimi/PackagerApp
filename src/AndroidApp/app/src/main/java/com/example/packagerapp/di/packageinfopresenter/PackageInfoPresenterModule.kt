@@ -12,11 +12,6 @@ import javax.inject.Singleton
 class PackageInfoPresenterModule {
 
     @Provides
-    fun provideLocalDatabaseRepository() : ILocalDatabaseRepository {
-        return LocalDatabaseRepository()
-    }
-
-    @Provides
     @Singleton
     fun provideMainPresenterModule(localDatabaseRepository: LocalDatabaseRepository) : PackageInfoPresenter {
         return PackageInfoPresenter(localDatabaseRepository)

@@ -16,7 +16,7 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".views.addpackage.AddPackageActivity"></activity>
         <activity android:name=".views.packageinfoActivity.PackageInfoActivity" />
-        <activity android:name=".views.AboutActivity">
+        <activity android:name=".views.about.AboutActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

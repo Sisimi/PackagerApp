@@ -1,5 +1,6 @@
 package com.example.packagerapp.views.main
 
+import android.R.attr
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -9,23 +10,24 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.packagerapp.R
+import com.example.packagerapp.di.interactors.LocalDatabaseInteractorModule
+import com.example.packagerapp.di.interactors.RemoteDatabaseInteractorModule
 import com.example.packagerapp.di.mainpresenter.DaggerMainPresenterComponent
-import com.example.packagerapp.di.mainpresenter.MainPresenterComponent
-import com.example.packagerapp.misc.appContext
 import com.example.packagerapp.models.MyPackage
 import com.example.packagerapp.presenters.MainPresenter
 import com.example.packagerapp.screens.MainScreen
 import com.example.packagerapp.views.addpackage.AddPackageActivity
-import com.example.packagerapp.views.packageinfoActivity.PackageInfoActivity
 import com.example.packagerapp.views.main.recyclerview.PackageItem
 import com.example.packagerapp.views.main.recyclerview.PackageItemAdapter
-import kotlinx.android.synthetic.main.activity_main.addPackageFB
+import com.example.packagerapp.views.packageinfoActivity.PackageInfoActivity
+import com.google.zxing.integration.android.IntentIntegrator
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 import javax.inject.Inject
 
+
 class MainActivity : AppCompatActivity(), MainScreen {
     @Inject lateinit var mainPresenter: MainPresenter
-    //var mainPresenterComponent : MainPresenterComponent = DaggerMainPresenterComponent.create()
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var recyclerViewAdapter : PackageItemAdapter
@@ -38,14 +40,45 @@ class MainActivity : AppCompatActivity(), MainScreen {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        appContext = applicationContext
-        //mainPresenterComponent.inject(this)
-        DaggerMainPresenterComponent.create().inject(this)
+        applicationContext
+        DaggerMainPresenterComponent.builder()
+            .localDatabaseInteractorModule(LocalDatabaseInteractorModule(applicationContext))
+            .remoteDatabaseInteractorModule(RemoteDatabaseInteractorModule(applicationContext))
+            .build()
+            .inject(this)
+
         mainPresenter.attachScreen(this)
 
         initViews()
 
         mainPresenter.refreshDB()
+
+        //TODO: To be Implemented
+        /*
+        var qrScan = IntentIntegrator(this)
+        qrScan.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES)
+        qrScan.initiateScan()
+        */
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        //QR code handler logic
+        /*
+        val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
+
+        if (result != null) {
+            if (result.contents == null) {
+                Toast.makeText(this, "Result Not Found", Toast.LENGTH_LONG).show()
+            }
+            else
+            {
+                Toast.makeText(this, result.contents, Toast.LENGTH_LONG).show()
+            }
+        }
+        */
     }
 
     private fun initViews() {

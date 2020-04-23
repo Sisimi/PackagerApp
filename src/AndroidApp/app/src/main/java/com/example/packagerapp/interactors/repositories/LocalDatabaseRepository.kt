@@ -1,20 +1,22 @@
 package com.example.packagerapp.interactors.repositories
 //import com.example.packagerapp.data.DAOs.IPackageDAO
 //import com.example.packagerapp.data.PackagesDatabase
+import android.content.Context
 import com.example.packagerapp.data.DAOs.MyPackageDAO
 import com.example.packagerapp.data.MyPackagesDatabase
-import com.example.packagerapp.interactors.RepositoryHelper
-import com.example.packagerapp.misc.appContext
 import com.example.packagerapp.models.MyPackage
 import javax.inject.Inject
 
-class LocalDatabaseRepository @Inject constructor() :
+
+
+class LocalDatabaseRepository @Inject constructor(appContext : Context) :
     ILocalDatabaseRepository {
     private var myPackageDAO: MyPackageDAO
 
 
+
     init {
-        val database: MyPackagesDatabase = MyPackagesDatabase.getInstance(appContext!!)
+        val database: MyPackagesDatabase = MyPackagesDatabase.getInstance(appContext)
 
         myPackageDAO = database.packageDAO()
     }
@@ -36,10 +38,14 @@ class LocalDatabaseRepository @Inject constructor() :
 
         deletePackageTask.execute(id)
 
-        if(deletePackageTask.get() > 0)
-        {
-            return
-        }
+        return
+    }
+
+    override fun deleteAll() {
+        var deleteAllPackageTask =
+            RepositoryHelper.DeleteAllPackageAsyncTask(myPackageDAO)
+
+        deleteAllPackageTask.execute()
     }
 
     override fun getAll(): MutableList<MyPackage>? {

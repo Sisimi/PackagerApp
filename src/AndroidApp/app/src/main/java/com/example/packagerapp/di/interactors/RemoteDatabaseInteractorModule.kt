@@ -1,10 +1,10 @@
-package com.example.packagerapp.di
+package com.example.packagerapp.di.interactors
 
+import android.content.Context
 import com.example.packagerapp.R
 import com.example.packagerapp.interactors.APIs.IRemoteDatabaseAPI
 import com.example.packagerapp.interactors.APIs.IRemoteDatabaseInteractor
 import com.example.packagerapp.interactors.APIs.RemoteDatabaseInteractor
-import com.example.packagerapp.misc.appContext
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -20,7 +20,9 @@ import javax.net.ssl.*
 
 
 @Module
-class RemoteDatabaseInteractorModule {
+class RemoteDatabaseInteractorModule constructor(appContext:Context) {
+
+    private var appContext = appContext
 
     @Provides
     fun provideRemoteDatabaseAPI() : IRemoteDatabaseAPI{

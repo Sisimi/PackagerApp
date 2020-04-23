@@ -13,8 +13,10 @@ interface MyPackageDAO {
     fun insertNewPackage(packageObject: MyPackage)
 
     @Query(value = "DELETE FROM MyPackage WHERE id = :packageId")
-    //@Delete
     fun deletePackage(packageId:String): Int
+
+    @Query(value = "DELETE FROM MyPackage ")
+    fun deleteAllPackage(): Int
 
     @Update
     fun updatePackage(packageObject: MyPackage): Int

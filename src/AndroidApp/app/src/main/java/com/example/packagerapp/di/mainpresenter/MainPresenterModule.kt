@@ -22,11 +22,6 @@ class MainPresenterModule {
     }
 
     @Provides
-    fun provideLocalDatabaseRepository() : ILocalDatabaseRepository {
-        return LocalDatabaseRepository()
-    }
-
-    @Provides
     @Singleton
     fun provideMainPresenterModule(databaseInteractor: RemoteDatabaseInteractor, localDatabaseRepository: LocalDatabaseRepository) : MainPresenter {
         return MainPresenter(databaseInteractor, localDatabaseRepository)

@@ -1,4 +1,4 @@
-package com.example.packagerapp.interactors
+package com.example.packagerapp.interactors.repositories
 
 import android.os.AsyncTask
 import com.example.packagerapp.data.DAOs.MyPackageDAO
@@ -33,6 +33,15 @@ object RepositoryHelper {
 
         override fun doInBackground(vararg params: String?): Int? {
             return dao.deletePackage(params[0]!!)
+        }
+    }
+
+    class DeleteAllPackageAsyncTask constructor(packageDAO: MyPackageDAO) : AsyncTask<Unit, Unit, Int>()
+    {
+        private var dao = packageDAO
+
+        override fun doInBackground(vararg params: Unit?): Int? {
+            return dao.deleteAllPackage()
         }
     }
 

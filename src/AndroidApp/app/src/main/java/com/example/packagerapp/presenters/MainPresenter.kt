@@ -14,10 +14,6 @@ class MainPresenter
     )
     : AbstractPresenter<MainScreen>() {
 
-    init {
-
-    }
-
     fun startQRScan() {
         //TODO: implement the scan logic in the future
         //temporary solution
