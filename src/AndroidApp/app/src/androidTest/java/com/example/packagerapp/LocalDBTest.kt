@@ -34,7 +34,7 @@ class LocalDBTest {
     }
 
     @After
-    fun truncDB()
+    fun trunkDB()
     {
         localDBRepository.deleteAll()
     }
