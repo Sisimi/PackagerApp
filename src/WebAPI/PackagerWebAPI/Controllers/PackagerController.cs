@@ -41,9 +41,27 @@ namespace PackagerWebAPI.Controllers
 
         [HttpPut]
         [Route("package/add")]
-        public async Task<ActionResult<Package>> AddPackage(Package package)
+        public async Task<ActionResult<Package>> PutOrUpdatePackage(Package package)
         {
             return await packagerDBRepository.AddPackage(package);
+        }
+
+        [HttpPut]
+        [Route("package/addMany")]
+        public async Task<ActionResult> PutManyPackage(List<Package> packages)
+        {
+            if (packages.Count > 0)
+            {
+                await packagerDBRepository.AddManyPackage(packages);    
+            }
+            return Ok();
+        }
+
+        [HttpDelete]
+        [Route("package/delete/{id}")]
+        public async Task<ActionResult<Package>> DeletePackage(string id)
+        {
+            return await packagerDBRepository.DeletePackage(id);
         }
 
     }

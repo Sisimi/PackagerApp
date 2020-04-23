@@ -1,36 +1,54 @@
 package com.example.packagerapp.presenters
 
-import com.example.packagerapp.interactors.DatabaseInteractor
-import com.example.packagerapp.interactors.IDatabaseInteractor
-import com.example.packagerapp.models.Package
+import com.example.packagerapp.interactors.APIs.IRemoteDatabaseInteractor
+import com.example.packagerapp.interactors.repositories.ILocalDatabaseRepository
+import com.example.packagerapp.models.MyPackage
 import com.example.packagerapp.screens.MainScreen
-import dagger.Module
-import dagger.Provides
+import java.util.function.Predicate
 import javax.inject.Inject
 
 class MainPresenter
-    @Inject constructor(private var databaseInteractor: IDatabaseInteractor)
+    @Inject constructor(
+        private var remoteDatabaseInteractor: IRemoteDatabaseInteractor,
+        private var localDatabaseRepository: ILocalDatabaseRepository
+    )
     : AbstractPresenter<MainScreen>() {
 
-    private val packagesCache: List<Package>? = null
-
-    override fun attachScreen(screen: MainScreen) {
-        super.attachScreen(screen)
-    }
-
-    override fun detachScreen() {
-        super.detachScreen()
-    }
-
     fun startQRScan() {
-        throw NotImplementedError()
+        //TODO: implement the scan logic in the future
+        //temporary solution
+        var temp = localDatabaseRepository.getAll()
+
+        if(temp != null && temp.count() > 0)
+        {
+            screen!!.handleScanResult(temp[0])
+        }
+        else
+        {
+            screen!!.handleScanResult(null)
+        }
     }
 
-    fun getPackages() {
-        throw NotImplementedError()
+    fun getLocalData() : MutableList<MyPackage> {
+        return localDatabaseRepository.getAll() ?: mutableListOf()
     }
 
-    fun searchPackages(packageName: String){
-        throw NotImplementedError()
+    fun deletePackage(id: String)
+    {
+        localDatabaseRepository.delete(id)
+
+        remoteDatabaseInteractor.deletePackage(id) { returnedData ->
+            //currently nothing
+        }
+
     }
+
+    fun refreshDB() {
+        var localPackages = localDatabaseRepository.getAll() ?: mutableListOf()
+
+        remoteDatabaseInteractor.addManyPackages(localPackages)
+    }
+
+
+
 }

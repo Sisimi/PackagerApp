@@ -1,9 +1,8 @@
 package com.example.packagerapp.screens
 
-import com.example.packagerapp.models.Package
+import com.example.packagerapp.models.MyPackage
 
 interface MainScreen {
-    fun openPackageInfoActivity(packageObject: Package)
-
-    fun refreshList(packages: Package)
+    fun handlePackageRemoved(position: Int)
+    fun handleScanResult(myPackage: MyPackage?)
 }
