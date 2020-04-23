@@ -20,7 +20,7 @@ class ValueDialog(view: View) : AppCompatDialogFragment() {
 
     //TODO: missing validation
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        var view = activity!!.layoutInflater.inflate(R.layout.layout_customdialog, null)
+        var view = requireActivity().layoutInflater.inflate(R.layout.layout_customdialog, null)
 
         editTextName = view.findViewById(R.id.valueNameEditText)
         editTextValue = view.findViewById(R.id.valueEditText)

@@ -15,4 +15,6 @@
 
     <string name="lorem_ipsum_short">Lorem ipsum dolor</string>
 
+    <string name="introText">On this activity would be a login screen, and the app logo.</string>
+
 </resources>
