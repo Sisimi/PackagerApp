@@ -14,6 +14,7 @@ import com.example.packagerapp.di.interactors.LocalDatabaseInteractorModule
 import com.example.packagerapp.models.NameValue
 import com.example.packagerapp.presenters.AddPackagePresenter
 import com.example.packagerapp.screens.AddPackageScreen
+import com.example.packagerapp.services.FirebaseHelper
 import com.example.packagerapp.views.packageinfoActivity.PackageInfoActivity
 import com.example.packagerapp.views.addpackage.recyclerview.ValueItem
 import com.example.packagerapp.views.addpackage.recyclerview.ValueItemAdapter
@@ -33,6 +34,8 @@ class AddPackageActivity : AppCompatActivity(), ValueDialogListener, AddPackageS
     private lateinit var layoutManager: LinearLayoutManager
     private var valueItems = mutableListOf<ValueItem>()
 
+    private lateinit var firebaseHelper: FirebaseHelper
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,8 +48,11 @@ class AddPackageActivity : AppCompatActivity(), ValueDialogListener, AddPackageS
             .inject(this)
 
         addPackagePresenter.attachScreen(this)
+        firebaseHelper = FirebaseHelper(this)
 
         initViews()
+
+        firebaseHelper.logStatusEventToFireBase("EnterActivity",this::class.simpleName.toString(),"BackButton")
     }
 
     private fun initViews() {
@@ -54,7 +60,9 @@ class AddPackageActivity : AppCompatActivity(), ValueDialogListener, AddPackageS
 
 
         scanQRImageView.setOnClickListener()
-        { _ ->
+        {
+            firebaseHelper.logStatusEventToFireBase("StartScan",this::class.simpleName.toString(),"ScanButton")
+
             //TODO: Implement QR scan
             //if scan successfull:
             val intent = Intent(this, PackageInfoActivity::class.java)
@@ -74,8 +82,8 @@ class AddPackageActivity : AppCompatActivity(), ValueDialogListener, AddPackageS
             addPackagePresenter.setMyPackageDescription(text.toString())
         }
 
-        addPackageFB.setOnClickListener(){_ ->
-            //TODO: adatbazisba mentes
+        addPackageFB.setOnClickListener(){
+            firebaseHelper.logStatusEventToFireBase("AddedPackage",this::class.simpleName.toString(),"AddPackageButton")
             addPackagePresenter.addPackageToDB()
 
             val intent = Intent(this, MainActivity::class.java)

@@ -13,9 +13,13 @@ import com.example.packagerapp.models.MyPackage
 import com.example.packagerapp.models.NameValue
 import com.example.packagerapp.presenters.PackageInfoPresenter
 import com.example.packagerapp.screens.PackageInfoScreen
+import com.example.packagerapp.services.FirebaseHelper
+
 import com.example.packagerapp.views.main.MainActivity
 import com.example.packagerapp.views.packageinfoActivity.recyclerview.PackageInfoAdapter
 import com.example.packagerapp.views.packageinfoActivity.recyclerview.PackageInfoValueItem
+import com.google.android.gms.analytics.HitBuilders
+import com.google.android.gms.analytics.Tracker
 import kotlinx.android.synthetic.main.activity_package_info.*
 import kotlinx.android.synthetic.main.toolbar.*
 import javax.inject.Inject
@@ -25,6 +29,10 @@ class PackageInfoActivity : AppCompatActivity(), PackageInfoScreen {
     private lateinit var adapter: PackageInfoAdapter
     private lateinit var layoutManager: RecyclerView.LayoutManager
     @Inject lateinit var packageInfoPresenter: PackageInfoPresenter
+
+    private lateinit var firebaseHelper : FirebaseHelper
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +44,10 @@ class PackageInfoActivity : AppCompatActivity(), PackageInfoScreen {
             .inject(this)
 
         packageInfoPresenter.attachScreen(this)
+        firebaseHelper = FirebaseHelper(this)
+
+        //var application = application as AnalyticsApplication
+        //mTracker = application.getDefaultTracker()
 
         packageInfoPresenter.myPackage = intent.getParcelableExtra("Package Item")!!
 
@@ -49,6 +61,8 @@ class PackageInfoActivity : AppCompatActivity(), PackageInfoScreen {
         packageInfoDescriptionTextView.text = packageInfoPresenter.myPackage.description
 
         initRecyclerView()
+
+        firebaseHelper.logStatusEventToFireBase("EnterActivity",this::class.simpleName.toString(), this::class.simpleName.toString())
     }
 
     private fun initRecyclerView() {
@@ -73,12 +87,16 @@ class PackageInfoActivity : AppCompatActivity(), PackageInfoScreen {
     }
 
     override fun onBackPressed() {
+        firebaseHelper.logStatusEventToFireBase("ExitActivity",this::class.simpleName.toString(),"BackButton")
+
         val intent = Intent(this, MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         startActivity(intent)
     }
 
     override fun handleScanResult(myPackage: MyPackage?) {
+        firebaseHelper.logStatusEventToFireBase("ScanSuccessful",this::class.simpleName.toString(),"ScanActivity")
+
         //TODO: Code duplication, extract this snippet somewhere
         //TODO: Implement QR scan
         //if scan successfull:

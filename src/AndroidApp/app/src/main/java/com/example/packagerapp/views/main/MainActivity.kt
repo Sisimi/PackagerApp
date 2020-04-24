@@ -1,6 +1,5 @@
 package com.example.packagerapp.views.main
 
-import android.R.attr
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -16,15 +15,21 @@ import com.example.packagerapp.di.mainpresenter.DaggerMainPresenterComponent
 import com.example.packagerapp.models.MyPackage
 import com.example.packagerapp.presenters.MainPresenter
 import com.example.packagerapp.screens.MainScreen
+import com.example.packagerapp.services.FirebaseHelper
 import com.example.packagerapp.views.addpackage.AddPackageActivity
 import com.example.packagerapp.views.main.recyclerview.PackageItem
 import com.example.packagerapp.views.main.recyclerview.PackageItemAdapter
 import com.example.packagerapp.views.packageinfoActivity.PackageInfoActivity
-import com.google.zxing.integration.android.IntentIntegrator
+import com.google.android.gms.analytics.HitBuilders.EventBuilder
+import com.google.android.gms.analytics.HitBuilders.ScreenViewBuilder
+import com.google.android.gms.analytics.Tracker
+import com.google.firebase.analytics.FirebaseAnalytics
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 import javax.inject.Inject
 
+
+//TODO: Analytics constants should be extracted to a helper class
 
 class MainActivity : AppCompatActivity(), MainScreen {
     @Inject lateinit var mainPresenter: MainPresenter
@@ -33,6 +38,10 @@ class MainActivity : AppCompatActivity(), MainScreen {
     private lateinit var recyclerViewAdapter : PackageItemAdapter
     private lateinit var recycleViewLayoutManager: RecyclerView.LayoutManager
     private lateinit var packageItems : MutableList<PackageItem>
+
+    private lateinit var firebaseHelper: FirebaseHelper
+
+    private var mTracker : Tracker? = null
 
 
 //TODO:extract Initial steps to respective methods
@@ -49,6 +58,8 @@ class MainActivity : AppCompatActivity(), MainScreen {
 
         mainPresenter.attachScreen(this)
 
+        firebaseHelper = FirebaseHelper(this)
+
         initViews()
 
         mainPresenter.refreshDB()
@@ -60,6 +71,7 @@ class MainActivity : AppCompatActivity(), MainScreen {
         qrScan.initiateScan()
         */
 
+        firebaseHelper.logStatusEventToFireBase("EnterActivity",this::class.simpleName.toString(), this::class.simpleName.toString())
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -76,6 +88,14 @@ class MainActivity : AppCompatActivity(), MainScreen {
             else
             {
                 Toast.makeText(this, result.contents, Toast.LENGTH_LONG).show()
+
+                 mTracker?.send( EventBuilder()
+                .setCategory("Action")
+                .setAction("SuccessfulPackageRead")
+                .build()
+
+                //TODO:copy activity change here
+        )
             }
         }
         */
@@ -91,6 +111,7 @@ class MainActivity : AppCompatActivity(), MainScreen {
 
         scanQRImageView.setOnClickListener()
         {
+            firebaseHelper.logStatusEventToFireBase("StartScan",this::class.simpleName.toString(), "ScanButton")
             mainPresenter.startQRScan()
         }
 
@@ -132,6 +153,9 @@ class MainActivity : AppCompatActivity(), MainScreen {
     }
 
     override fun onBackPressed() {
+        firebaseHelper.logStatusEventToFireBase("ExitActivity",this::class.simpleName.toString(), "BackButton")
+        firebaseHelper.logStatusEventToFireBase("ExitApp", this::class.simpleName.toString(),"BackButton")
+
         val intent = Intent(Intent.ACTION_MAIN)
         intent.addCategory(Intent.CATEGORY_HOME)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
@@ -139,6 +163,8 @@ class MainActivity : AppCompatActivity(), MainScreen {
     }
 
     override fun handlePackageRemoved(position: Int) {
+        firebaseHelper.logStatusEventToFireBase("PackageRemoved",this::class.simpleName.toString(), "RecycleViewItem")
+
         var item = packageItems.removeAt(position)
         recyclerViewAdapter.notifyItemRemoved(position)
 
@@ -148,16 +174,16 @@ class MainActivity : AppCompatActivity(), MainScreen {
     override fun handleScanResult(myPackage: MyPackage?) {
         if(myPackage == null)
         {
+            firebaseHelper.logStatusEventToFireBase("FailedScan",this::class.simpleName.toString(), "ScanActivity")
             Toast.makeText(this,"We could not find a package based on this QR code!", Toast.LENGTH_LONG).show()
         }
         else
         {
+            firebaseHelper.logStatusEventToFireBase("SuccessfulScan",this::class.simpleName.toString(), "ScanActivity")
             //TODO: atadni valami package-et
             val intent = Intent(this, PackageInfoActivity::class.java)
             intent.putExtra("Package Item", myPackage)
             startActivity(intent)
         }
     }
-
-
 }
